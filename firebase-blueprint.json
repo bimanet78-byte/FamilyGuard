@@ -1,0 +1,202 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated parent or child account profile",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["parent", "kid"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "role", "createdAt", "updatedAt"]
+    },
+    "PairingCode": {
+      "title": "PairingCode",
+      "description": "Short-lived one-time pairing token created by a parent for child device linking",
+      "type": "object",
+      "properties": {
+        "parentUid": { "type": "string" },
+        "parentName": { "type": "string" },
+        "deviceNameHint": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "claimed", "revoked"] },
+        "claimedByUid": { "type": "string" },
+        "claimedDeviceId": { "type": "string" },
+        "ttlMinutes": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["parentUid", "parentName", "status", "ttlMinutes", "createdAt", "updatedAt"]
+    },
+    "ManagedDevice": {
+      "title": "ManagedDevice",
+      "description": "Consent-paired child device with telemetry, appearance, and active session indicators",
+      "type": "object",
+      "properties": {
+        "parentUid": { "type": "string" },
+        "childUid": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "deviceName": { "type": "string" },
+        "kidName": { "type": "string" },
+        "manufacturer": { "type": "string" },
+        "model": { "type": "string" },
+        "androidVersion": { "type": "string" },
+        "kidsAppVersion": { "type": "string" },
+        "connectionState": { "type": "string", "enum": ["online", "connecting", "offline"] },
+        "batteryPercent": { "type": "integer" },
+        "batteryCharging": { "type": "boolean" },
+        "batteryTempC": { "type": "integer" },
+        "batteryCurrentMa": { "type": "integer" },
+        "networkType": { "type": "string" },
+        "activeAppName": { "type": "string" },
+        "wallpaperId": { "type": "string" },
+        "brightnessPercent": { "type": "integer" },
+        "volumePercent": { "type": "integer" },
+        "ringerMode": { "type": "string", "enum": ["ring", "vibrate", "silent"] },
+        "dailyScreenTimeMinutes": { "type": "integer" },
+        "dailyLimitMinutes": { "type": "integer" },
+        "pinHash": { "type": "string" },
+        "floatingPanelEnabled": { "type": "boolean" },
+        "activeLocationSession": { "type": "boolean" },
+        "activeCameraSession": { "type": "boolean" },
+        "activeAudioSession": { "type": "boolean" },
+        "activeScreenShareSession": { "type": "boolean" },
+        "permissionsGrantedCount": { "type": "integer" },
+        "permissionsTotalCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "parentUid",
+        "childUid",
+        "memberUids",
+        "deviceName",
+        "kidName",
+        "manufacturer",
+        "model",
+        "androidVersion",
+        "kidsAppVersion",
+        "connectionState",
+        "batteryPercent",
+        "batteryCharging",
+        "networkType",
+        "wallpaperId",
+        "brightnessPercent",
+        "volumePercent",
+        "ringerMode",
+        "dailyScreenTimeMinutes",
+        "dailyLimitMinutes",
+        "floatingPanelEnabled",
+        "activeLocationSession",
+        "activeCameraSession",
+        "activeAudioSession",
+        "activeScreenShareSession",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ParentCommand": {
+      "title": "ParentCommand",
+      "description": "Audited parent request sent to child companion app with explicit consent lifecycle",
+      "type": "object",
+      "properties": {
+        "parentUid": { "type": "string" },
+        "childUid": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "commandType": { "type": "string" },
+        "payloadText": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved_by_child", "declined_by_child", "executed", "expired", "stopped"] },
+        "resultMessage": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["parentUid", "childUid", "memberUids", "commandType", "payloadText", "status", "resultMessage", "createdAt", "updatedAt"]
+    },
+    "ScreenTimeRule": {
+      "title": "ScreenTimeRule",
+      "description": "App screen-time limit and schedule rule",
+      "type": "object",
+      "properties": {
+        "parentUid": { "type": "string" },
+        "childUid": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "packageName": { "type": "string" },
+        "appName": { "type": "string" },
+        "dailyLimitMinutes": { "type": "integer" },
+        "paused": { "type": "boolean" },
+        "scheduleLabel": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["parentUid", "childUid", "memberUids", "packageName", "appName", "dailyLimitMinutes", "paused", "scheduleLabel", "createdAt", "updatedAt"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Immutable transparency log of every monitoring or command event",
+      "type": "object",
+      "properties": {
+        "parentUid": { "type": "string" },
+        "childUid": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "actorUid": { "type": "string" },
+        "actorRole": { "type": "string", "enum": ["parent", "child", "system"] },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "status": { "type": "string", "enum": ["ok", "pending_consent", "declined", "revoked", "needs_permission"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["parentUid", "childUid", "memberUids", "actorUid", "actorRole", "action", "details", "status", "createdAt"]
+    },
+    "LocationShare": {
+      "title": "LocationShare",
+      "description": "Consent-gated location update shared only while active",
+      "type": "object",
+      "properties": {
+        "parentUid": { "type": "string" },
+        "childUid": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "accuracyMeters": { "type": "number" },
+        "provider": { "type": "string" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["parentUid", "childUid", "memberUids", "latitude", "longitude", "accuracyMeters", "provider", "active", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Authenticated user profile and mode preference"
+    },
+    "/pairing_codes/{code}": {
+      "schema": { "$ref": "#/entities/PairingCode" },
+      "description": "Expiring 6-character pairing tokens"
+    },
+    "/devices/{deviceId}": {
+      "schema": { "$ref": "#/entities/ManagedDevice" },
+      "description": "Linked child devices accessible by parentUid and childUid via memberUids"
+    },
+    "/devices/{deviceId}/commands/{commandId}": {
+      "schema": { "$ref": "#/entities/ParentCommand" },
+      "description": "Parent utility/session requests with child consent state"
+    },
+    "/devices/{deviceId}/screen_time_rules/{ruleId}": {
+      "schema": { "$ref": "#/entities/ScreenTimeRule" },
+      "description": "App screen-time schedules and daily limits"
+    },
+    "/devices/{deviceId}/audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Immutable transparency audit log"
+    },
+    "/devices/{deviceId}/location_shares/{shareId}": {
+      "schema": { "$ref": "#/entities/LocationShare" },
+      "description": "Consent-gated location share records"
+    }
+  }
+}

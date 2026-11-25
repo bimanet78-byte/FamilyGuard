@@ -1,0 +1,6 @@
+{
+  "name": "FamilyGuard",
+  "description": "Transparent, consent-based Parent Controller and Kids Companion family safety app with real-time device overview, screen-time rules, and secure pairing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
